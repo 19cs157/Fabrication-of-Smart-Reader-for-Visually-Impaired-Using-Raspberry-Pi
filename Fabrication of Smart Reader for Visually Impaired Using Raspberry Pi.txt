@@ -1,0 +1,171 @@
+//Program to create a Dataset
+
+#import python libraries
+import sounddevice as sd
+from scipy.io.wavfile import write
+
+#Create a Taining set
+
+for i in range(1.21):
+    fs= 8000
+    seconds = 3
+    record=sd.rec(int(seconds fs), samplerate=fs, channels=1)
+    print('Started')
+    sd.wait()
+   print('End')
+   name Train_data/+str(i) + '.wav"
+   write(name, fs, record)
+
+//Program for reducing Noise of the audio
+
+#import python libraries
+import noisereduce as nr
+import soundfile as sf
+import os
+
+#Reduce noise of files in Train_data and store in Train_data_nr folder
+
+dir = "Train_data/"
+des "Train_data_nr/"
+for aud in os.listdir(dir):
+    data, samplerate= sf.read(dir + aud)
+    data = nr.reduce_noise(audio_clip-data, noise_clip-data, verbose=True) data = nr.reduce_noise(audio_clip-data, noise_clip-data, verbose=True)
+    name des +aud
+    sf.write(name, data, samplerate)
+
+//Program for Visualizing the waveform of the audio
+
+import matplotlib.pyplot as plt
+import numpy as np
+import wave
+
+#Define function to visualize audio file
+
+def visualize(path: str):
+
+   #reading the audio file
+
+   raw wave.open(path)
+
+    #reads all the frames
+
+    #-1 indicates all or max frames
+
+    signal raw.readframes(-1))
+
+    signal = np.frombuffer(signal, dtype="int16")
+ 
+   # gets the frame rate
+
+    f_rate= raw.getframerate()
+
+    # to Plot the x-axis in seconds
+
+    # you need get the frame rate
+
+    # and divide by size of your signal
+
+    # to create a Time Vector
+
+    # spaced linearly with the size
+
+    # of the audio file
+
+    time = np.linspace(
+
+    0, # start
+
+    len(signal)/f_rate,
+
+    num=len(signal))
+
+    # using matlplotlib to plot # creates a new figure
+
+    plt.figure(1)
+
+    # title of the plot plt.title("Sound Wave")
+
+    # label of x-axis
+
+    plt.xlabel("Time")
+
+    # actual ploting
+
+    plt.plot(time, signal)
+
+    # shows the plot
+
+    # in new window
+
+    plt.show()
+
+if_name__ == "__main_":
+
+    visualize("audiol_denisel.wav")
+
+//Program for training speech recognition
+
+#import python libraries
+
+import numpy as np
+import os
+import soundfile as sf
+from sklearn.multiclass import One VsRestClassifier
+
+# import training data and Create a training set
+
+dir="Train_data/"
+train_x= []
+train_y=[]
+c=1
+for fol in os.listdir(dir):
+    print(fol)
+    fol dir + fol+/
+for aud in os.listdir(fol):
+    print(aud)
+    aud fol + aud
+    data, samplerate= sf.read(aud)
+    data = np.transpose(data)
+    train_x.append(data)
+    train_y.append(c)
+c+= 1
+
+#Create Test data
+
+dir= "Test_data/"
+test_x=[]
+Ist=[]
+for aud in os.listdir(dir):
+    print(aud)
+    Ist.append(aud)
+    aud dir + aud
+    data,samplerate = sf.read(aud)
+    data= np.transpose(data)
+    test_x.append(data)
+
+#Convert list to array using numpy
+
+train_x= np.array(train_x)
+train_y= np.array(train_y)
+test x= np.array(test_x)
+
+#Create a SDG Classifier
+
+ovr_classifier OneVsRestClassifier(SVC()))
+
+#Train OneVsRest Classifier
+
+ovr_classifier.fit(train_x,train_y)
+
+#Predicting the output using Test data
+
+x= ovr_classifier.predict(test_x)
+y=[1,3,1,1,2,1,2,3,2,1,2,1,2,2,2,1,2,1,2,3,3,1,2,3,1,2,3,2,2,1,2]
+
+#Find the accuracy of the program
+
+c = np.count_nonzero(np.array(x==y))
+
+#printing the accuracy
+
+print(c/31)
